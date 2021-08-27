@@ -1,0 +1,23 @@
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+featureGates:
+  SeccompDefault: true
+nodes:
+- role: control-plane
+  image: kindest/node:v1.22.0@sha256:f97edf7f7ed53c57762b24f90a34fad101386c5bd4d93baeb45449557148c717
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        seccomp-default: "true"
+        feature-gates: "SeccompDefault=true"
+- role: worker
+  image: kindest/node:v1.22.0@sha256:f97edf7f7ed53c57762b24f90a34fad101386c5bd4d93baeb45449557148c717
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        seccomp-default: "true"
+        feature-gates: "SeccompDefault=true"
